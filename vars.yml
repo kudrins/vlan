@@ -1,0 +1,14 @@
+---
+vcenter_hostname: 10.100.10.1
+vcenter_username: administrator@vsphere.local
+vcenter_password: password
+
+routers:
+  - { template: t_centos8,  name: inetRouter,    memory_mb: 1024, hostname: inetRouter,    ip: 10.100.11.142, ip2: 10.10.10.254}
+  - { template: t_centos8,  name: centralRouter, memory_mb: 1024, hostname: centralRouter, ip: 10.100.11.141, ip2: 10.10.10.254}
+
+servers:
+  - { template: t_centos8,  vms: VMkernel, name: testClient1, memory_mb: 1024, hostname: testClient1, ip: 10.100.11.143}
+  - { template: t_centos8,  vms: VMkernel, name: testServer1, memory_mb: 1024, hostname: testServer1, ip: 10.100.11.144}
+  - { template: t_ubuntu_s, vms: VMkernel, name: testClient2, memory_mb: 1024, hostname: testClient2, ip: 10.100.11.145}
+  - { template: t_ubuntu_s, vms: VMkernel, name: testServer2, memory_mb: 1024, hostname: testServer2, ip: 10.100.11.146}

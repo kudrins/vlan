@@ -1,0 +1,13 @@
+[all:vars]
+ansible_user=root
+ansible_ssh_pass=password
+
+[nets]
+testClient1 ansible_host=10.100.11.143 vlan_id=3 vlan_ip=10.10.10.254
+testServer1 ansible_host=10.100.11.144 vlan_id=3 vlan_ip=10.10.10.1
+testClient2 ansible_host=10.100.11.145 vlan_id=2 vlan_ip=10.10.10.254 ip=10.100.11.145
+testServer2 ansible_host=10.100.11.146 vlan_id=2 vlan_ip=10.10.10.1 ip=10.100.11.146
+office1Router ansible_host=10.100.11.140 
+centralRouter ansible_host=10.100.11.141 bond_ip=192.168.255.2
+inetRouter ansible_host=10.100.11.142 bond_ip=192.168.255.1
+

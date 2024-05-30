@@ -1,0 +1,110 @@
+  - name: deploy inetRouter
+    community.vmware.vmware_guest:
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: False
+      datacenter: Datacenter
+      datastore: datastore_6TB
+      folder: otus_network
+      template: "t_centos8"
+      name: "inetRouter"
+      hardware:
+        memory_mb: 1024
+      networks:
+        - name: VMs11
+          ip:      10.100.11.142
+          netmask: 255.255.255.0
+          gateway: 10.100.11.254
+        - name:  VMs11
+        - name:  VMs11
+      customization:
+        hostname: inetRouter
+        dns_servers: [8.8.8.8]
+      state: powered-on
+      wait_for_ip_address: true
+    delegate_to: localhost
+
+  - name: deploy centralRouter
+    community.vmware.vmware_guest:
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: False
+      datacenter: Datacenter
+      datastore: datastore_6TB
+      folder: otus_network
+      template: "t_centos8"
+      name: "centralRouter"
+      hardware:
+        memory_mb: 1024
+      networks:
+        - name: VMs11
+          ip:      10.100.11.141
+          netmask: 255.255.255.0
+        - name:  VMs11
+        - name:  VMs11
+        - name:  VMs11
+          ip:      192.168.255.9
+          netmask: 255.255.255.252
+      customization:
+        hostname: centralRouter
+      state: powered-on
+      wait_for_ip_address: true
+    delegate_to: localhost
+
+  - name: deploy office1Router
+    community.vmware.vmware_guest:
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: False
+      datacenter: Datacenter
+      datastore: datastore_6TB
+      folder: otus_network
+      template: "t_centos8"
+      name: "office1Router"
+      hardware:
+        memory_mb: 1024
+      networks:
+        - name: VMs11
+          ip:      10.100.11.140
+          netmask: 255.255.255.0
+        - name:  VMs11
+          ip:      192.168.255.10
+          netmask: 255.255.255.252
+          gateway: 192.168.255.9
+        - name:  VMkernel
+        - name:  VMkernel
+      customization:
+        hostname: office1Routerr
+      state: powered-on
+      wait_for_ip_address: true
+    delegate_to: localhost
+
+  - name: deploy servers
+    local_action:
+      module: vmware_guest
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: False
+      datacenter: Datacenter
+      datastore: datastore_6TB
+      folder: otus_network
+      template: "{{item.template}}"
+      name: "{{item.name}}"
+      hardware:
+        memory_mb: "{{item.memory_mb}}"
+      networks:
+        - name: VMs11
+          ip: "{{item.ip}}"
+          netmask: 255.255.255.0
+        - name: "{{item.vms}}"
+      customization:
+        hostname: "{{item.hostname}}"
+      state: powered-on
+      wait_for_ip_address: true
+    with_items: "{{servers}}"
+    delegate_to: localhost
+
